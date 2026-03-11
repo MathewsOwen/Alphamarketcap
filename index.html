@@ -3,185 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ALPHAMARKETCAP | Inteligência Setorial</title>
+    <title>ALPHAMARKETCAP | Inteligência para quem move mercados</title>
+    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
-    <style>
-        :root { --bg: #0b0e11; --surface: #151921; --accent: #00f2ff; --up: #00ff88; --down: #ff3366; --border: #2b2f3a; --text-dim: #848e9c; }
-        
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
-        body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; }
-
-        /* SPLASH SCREEN */
-        #splash-screen {
-            position: fixed; inset: 0; background: #000; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; z-index: 9999; transition: 0.8s;
-        }
-        .splash-logo { font-size: clamp(35px, 8vw, 70px); font-weight: 900; letter-spacing: -2px; text-transform: uppercase; }
-        .splash-logo span { color: var(--accent); }
-        .splash-slogan { font-size: clamp(10px, 2vw, 18px); color: var(--accent); text-transform: uppercase; letter-spacing: 4px; margin-top: 10px; opacity: 0.8; }
-
-        /* SITE STRUCTURE */
-        #site-content { display: none; opacity: 0; transition: 1s; }
-        header { background: #000; height: 70px; display: flex; align-items: center; padding: 0 5%; border-bottom: 2px solid var(--accent); position: sticky; top: 0; z-index: 100; }
-        .logo-text { font-weight: 800; font-size: 20px; text-transform: uppercase; }
-        .logo-text span { color: var(--accent); }
-
-        .ticker-tape { background: #fff; height: 40px; border-bottom: 1px solid #ddd; }
-
-        .container { max-width: 1400px; margin: 30px auto; padding: 0 20px; }
-
-        /* DASHBOARD */
-        .dashboard-grid { display: grid; grid-template-columns: 2.5fr 1fr; gap: 25px; margin-bottom: 50px; }
-        .main-card { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 25px; }
-        
-        /* SEÇÕES POR SETOR */
-        .sector-title { 
-            font-size: 18px; font-weight: 700; color: var(--accent); 
-            margin: 40px 0 20px; padding-left: 15px; border-left: 4px solid var(--accent);
-            text-transform: uppercase; letter-spacing: 1px;
-        }
-        .stocks-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
-        
-        .stock-card { 
-            background: var(--surface); border: 1px solid var(--border); 
-            padding: 20px; border-radius: 4px; transition: 0.3s;
-            position: relative; overflow: hidden;
-        }
-        .stock-card:hover { border-color: var(--accent); transform: translateY(-5px); }
-        .stock-card .ticker { font-size: 12px; font-weight: 800; color: var(--accent); }
-        .stock-card .price { font-size: 26px; font-weight: 700; margin: 10px 0; font-family: 'JetBrains Mono'; }
-        .stock-card .change { font-weight: 700; font-size: 14px; }
-        .stock-card .name { font-size: 11px; color: var(--text-dim); margin-top: 10px; }
-
-        @media (max-width: 1000px) { .dashboard-grid { grid-template-columns: 1fr; } }
-    </style>
+    
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<div id="splash-screen">
-    <div class="splash-logo">ALPHA<span>MARKETCAP</span></div>
-    <div class="splash-slogan">Inteligência para quem move mercados.</div>
-</div>
-
-<div id="site-content">
-    <div class="ticker-tape">
-        <div class="tradingview-widget-container">
-            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
-            { "symbols": [{"proName":"BMFBOVESPA:IBOV","title":"IBOVESPA"},{"proName":"FX_IDC:USDBRL","title":"DÓLAR"}], "colorTheme":"light","locale":"br"}
-            </script>
-        </div>
+    <div id="splash-screen">
+        <div class="splash-logo">ALPHA<span>MARKETCAP</span></div>
+        <div class="splash-slogan">Inteligência para quem move mercados.</div>
     </div>
 
-    <header>
-        <div class="logo-text">ALPHA<span>MARKETCAP</span></div>
-        <div id="clock" style="margin-left:auto; font-family:'JetBrains Mono'; color:var(--accent); font-size:14px;">00:00:00</div>
-    </header>
-
-    <div class="container">
-        <div class="dashboard-grid">
-            <div class="main-card">
-                <h2 style="font-size:14px; color:var(--text-dim); margin-bottom:15px;">MERCADO EM TEMPO REAL</h2>
-                <div id="main-chart" style="height:450px;"></div>
-            </div>
-            <div class="main-card">
-                <h3 style="font-size:12px; color:var(--accent); margin-bottom:20px; text-transform:uppercase;">Destaques do Dia</h3>
-                <div id="highlights-list"></div>
-            </div>
-        </div>
-
-        <div id="sectors-container"></div>
-    </div>
-</div>
-
-<script src="https://s3.tradingview.com/tv.js"></script>
-<script>
-    const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR9hPdpNw-jrALbP32-Pgqhwe_X98uaZht0tjtZXidCFwiXvXTjbJc5diOaI270W8m_hyHYpd5xwlQl/pub?gid=0&single=true&output=csv';
-
-    window.addEventListener('load', () => {
-        setTimeout(() => {
-            document.getElementById('splash-screen').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('splash-screen').style.display = 'none';
-                document.getElementById('site-content').style.display = 'block';
-                setTimeout(() => { 
-                    document.getElementById('site-content').style.opacity = '1';
-                    new TradingView.widget({
-                        "container_id": "main-chart", "symbol": "BMFBOVESPA:IBOV",
-                        "interval": "D", "theme": "dark", "style": "3", "width": "100%", "height": "100%", "hide_top_toolbar": true
-                    });
-                    loadData(); 
-                }, 50);
-            }, 800);
-        }, 3000);
-    });
-
-    async function loadData() {
-        try {
-            const res = await fetch(SHEET_URL);
-            const text = await res.text();
-            const rows = text.split('\n').slice(1);
-            
-            const sectors = {}; // Objeto para agrupar por setor
-
-            rows.forEach(row => {
-                const c = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-                if(c[0] && c[0].trim() !== "") {
-                    const stock = {
-                        ticker: c[0].replace(/"/g,''),
-                        name: c[1].replace(/"/g,''),
-                        price: c[2],
-                        pct: c[3],
-                        sector: (c[4] || "Outros").trim().replace(/"/g,'')
-                    };
-
-                    if(!sectors[stock.sector]) sectors[stock.sector] = [];
-                    sectors[stock.sector].push(stock);
-                }
-            });
-
-            renderSectors(sectors);
-        } catch (e) { console.error("Erro ao carregar setores"); }
-    }
-
-    function renderSectors(sectors) {
-        const container = document.getElementById('sectors-container');
-        const highlights = document.getElementById('highlights-list');
+    <div id="site-content">
         
-        for (const sector in sectors) {
-            // Criar Título do Setor
-            const section = document.createElement('div');
-            section.innerHTML = `<h2 class="sector-title">${sector}</h2>`;
+        <div class="ticker-tape">
+            <div class="tradingview-widget-container">
+                <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+                { "symbols": [{"proName":"BMFBOVESPA:IBOV","title":"IBOVESPA"},{"proName":"FX_IDC:USDBRL","title":"DÓLAR"}], "colorTheme":"light","locale":"br"}
+                </script>
+            </div>
+        </div>
+
+        <header>
+            <div class="logo-text">ALPHA<span>MARKETCAP</span></div>
+            <div id="clock">00:00:00</div>
+        </header>
+
+        <main class="container">
+            <div class="dashboard-grid">
+                <div class="main-card">
+                    <h2 class="card-label">MONITORAMENTO EM TEMPO REAL</h2>
+                    <div id="main-chart" style="height: 450px;"></div>
+                </div>
+
+                <div class="main-card">
+                    <h3 class="side-title">Destaques do Dia</h3>
+                    <div id="highlights-list">
+                        </div>
+                </div>
+            </div>
             
-            const grid = document.createElement('div');
-            grid.className = 'stocks-grid';
+            <div id="sectors-container">
+                </div>
+        </main>
+    </div>
 
-            sectors[sector].forEach(x => {
-                const isNeg = x.pct.includes('-');
-                const cardHTML = `
-                    <div class="stock-card">
-                        <div class="ticker">${x.ticker}</div>
-                        <div class="price">${x.price}</div>
-                        <div class="change" style="color:${isNeg ? 'var(--down)' : 'var(--up)'}">${x.pct}</div>
-                        <div class="name">${x.name}</div>
-                    </div>
-                `;
-                grid.innerHTML += cardHTML;
+    <script src="https://s3.tradingview.com/tv.js"></script>
+    
+    <script src="js/config.js"></script>
+    
+    <script src="js/app.js"></script>
 
-                // Adicionar no destaque lateral se for um dos primeiros
-                if(highlights.children.length < 8) {
-                    highlights.innerHTML += `
-                        <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.05); font-size:13px;">
-                            <b>${x.ticker}</b> <span style="color:${isNeg ? 'var(--down)' : 'var(--up)'}">${x.pct}</span>
-                        </div>`;
-                }
-            });
-
-            section.appendChild(grid);
-            container.appendChild(section);
-        }
-    }
-
-    setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString(); }, 1000);
-</script>
 </body>
 </html>
