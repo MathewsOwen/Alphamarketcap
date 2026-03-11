@@ -2,185 +2,145 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ALPHAMARKETCAP | Global Financial Terminal</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <title>ALPHAMARKETCAP | Pro Terminal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
     <style>
         :root { --bg: #05070a; --surface: #0d1117; --accent: #00f2ff; --up: #00ff88; --down: #ff3366; --text: #f0f3f5; --text-dim: #848e9c; --border: #1f2937; }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; overflow: hidden; }
         
+        /* CORREÇÃO DE NITIDEZ */
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+        
+        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; overflow: hidden; }
         header { background: #000; padding: 0 30px; border-bottom: 2px solid var(--accent); display: flex; justify-content: space-between; align-items: center; height: 60px; }
-        .logo { font-weight: 800; font-size: 20px; text-transform: uppercase; cursor: pointer; color: #fff; text-decoration: none; }
+        .logo { font-weight: 800; font-size: 20px; text-transform: uppercase; color: #fff; text-decoration: none; letter-spacing: 1px; }
         .logo span { color: var(--accent); }
         
-        .ticker-wrap { background: #000; border-bottom: 1px solid var(--border); padding: 8px 0; overflow: hidden; height: 35px; }
-        .ticker { display: inline-block; white-space: nowrap; animation: scroll 60s linear infinite; font-family: 'JetBrains Mono'; font-size: 11px; color: var(--text-dim); }
-        @keyframes scroll { from { transform: translateX(100%); } to { transform: translateX(-100%); } }
-
-        .container { display: flex; height: calc(100vh - 95px); }
+        .container { display: flex; height: calc(100vh - 60px); }
         
-        /* SIDEBAR */
-        aside { width: 220px; padding: 20px; border-right: 1px solid var(--border); background: #000; display: flex; flex-direction: column; }
-        .nav-label { font-size: 9px; color: var(--accent); font-weight: 800; margin: 15px 0 5px 10px; text-transform: uppercase; letter-spacing: 1px; }
+        /* SIDEBAR AJUSTADA */
+        aside { width: 230px; padding: 20px; border-right: 1px solid var(--border); background: #000; display: flex; flex-direction: column; }
+        .nav-label { font-size: 10px; color: var(--accent); font-weight: 800; margin: 20px 0 10px; text-transform: uppercase; letter-spacing: 2px; }
         .nav-item { padding: 12px; color: var(--text-dim); cursor: pointer; font-size: 11px; font-weight: 600; border-radius: 4px; transition: 0.2s; text-transform: uppercase; margin-bottom: 2px; }
-        .nav-item:hover { color: #fff; background: rgba(0, 242, 255, 0.05); }
-        .nav-item.active { background: var(--surface); color: var(--accent); border: 1px solid var(--border); }
-        
-        /* MAIN */
-        main { flex: 1; overflow-y: auto; background: #05070a; position: relative; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); padding: 0; }
-        .card { background: #05070a; padding: 25px; cursor: pointer; transition: 0.2s; }
+        .nav-item:hover, .nav-item.active { color: #fff; background: #161b22; border-left: 3px solid var(--accent); }
+
+        /* BOTÃO QUEM SOMOS ESPECIAL */
+        .btn-about { margin-top: auto; padding: 15px; background: var(--surface); border: 1px solid var(--border); color: var(--accent); text-align: center; font-size: 10px; font-weight: 800; cursor: pointer; border-radius: 4px; text-transform: uppercase; }
+        .btn-about:hover { background: var(--accent); color: #000; }
+
+        main { flex: 1; overflow: hidden; background: #05070a; }
+        #screener-view, #terminal-view, #about-view { width: 100%; height: 100%; display: none; overflow-y: auto; }
+        #terminal-view.active, #screener-view.active, #about-view.active { display: block; }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1px; background: var(--border); }
+        .card { background: #05070a; padding: 25px; cursor: pointer; }
         .card:hover { background: #0d1117; outline: 1px solid var(--accent); z-index: 1; }
-        .symbol { color: var(--text-dim); font-size: 11px; font-weight: 700; font-family: 'JetBrains Mono'; }
-        .price { font-size: 24px; font-weight: 600; margin: 10px 0; font-family: 'JetBrains Mono'; }
-        .pos { color: var(--up); } .neg { color: var(--down); }
 
-        /* SCREENER CONTAINER */
-        #screener-view { display: none; width: 100%; height: 100%; background: #000; }
+        /* ESTILO DO TEXTO SOBRE */
+        .content-text { max-width: 800px; margin: 60px auto; padding: 0 20px; line-height: 1.8; }
+        .content-text h1 { color: var(--accent); margin-bottom: 30px; font-size: 32px; }
+        .content-text p { color: #ccc; margin-bottom: 20px; font-size: 16px; }
 
-        /* MODAL */
         #chart-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); display: none; z-index: 10000; }
-        .modal-body { display: flex; width: 100%; height: 100%; }
-        .close-btn { position: fixed; top: 20px; right: 20px; width: 45px; height: 45px; background: var(--down); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10001; font-weight: bold; border: none; }
-        
-        .world-news { width: 320px; border-left: 1px solid var(--border); background: #000; overflow-y: auto; }
+        .close-btn { position: fixed; top: 20px; right: 20px; width: 40px; height: 40px; background: var(--down); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10001; font-weight: bold; border: none; }
     </style>
 </head>
 <body>
 
 <header>
-    <a href="/" class="logo">ALPHA<span>MARKETCAP</span></a>
-    <div style="font-size: 11px; color: var(--text-dim)" id="clock">00:00:00</div>
+    <div class="logo">ALPHA<span>MARKETCAP</span></div>
+    <div id="clock" style="font-family: 'JetBrains Mono'; font-size: 12px;">00:00:00</div>
 </header>
-
-<div class="ticker-wrap"><div class="ticker" id="ticker-feed">SINCRONIZANDO COM A BASE DE DADOS B3 & NASDAQ...</div></div>
 
 <div class="container">
     <aside>
         <div class="nav-label">Inteligência</div>
-        <div class="nav-item active" onclick="showSection('terminal')">📊 DESTAQUES ALPHA</div>
-        <div class="nav-item" onclick="showSection('screener')">🔍 SCREENER GLOBAL</div>
+        <div class="nav-item active" onclick="switchTab('terminal')">📊 Destaques Alpha</div>
+        <div class="nav-item" onclick="switchTab('screener')">🔍 Screener Global</div>
         
-        <div class="nav-label">Setores Alpha</div>
-        <div id="sector-menu"></div>
+        <div class="nav-label">Setores</div>
+        <div id="sector-btns"></div>
+
+        <div class="btn-about" onclick="switchTab('about')">ℹ️ Quem Somos / Sobre</div>
     </aside>
 
     <main>
-        <div id="terminal-view">
-            <div class="grid" id="main-grid"></div>
-        </div>
-
+        <div id="terminal-view" class="active"><div class="grid" id="main-grid"></div></div>
+        
         <div id="screener-view">
-            <div class="tradingview-widget-container" style="height:100%;width:100%">
-                <div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>
+            <iframe src="https://s3.tradingview.com/external-embedding/embed-widget-screener.js?{"width":"100%","height":"100%","defaultColumn":"overview","defaultScreen":"most_capitalized","market":"brazil","showToolbar":true,"colorTheme":"dark","locale":"br"}" style="width:100%; height:100%; border:none;"></iframe>
+            <div class="tradingview-widget-container" style="height:100%">
+                <div class="tradingview-widget-container__widget"></div>
                 <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-screener.js" async>
                 {
-                "width": "100%",
-                "height": "100%",
-                "defaultColumn": "overview",
-                "defaultScreen": "most_capitalized",
-                "market": "brazil",
-                "showToolbar": true,
-                "colorTheme": "dark",
-                "locale": "br"
+                  "width": "100%", "height": "100%", "defaultColumn": "overview", "defaultScreen": "most_capitalized",
+                  "market": "brazil", "showToolbar": true, "colorTheme": "dark", "locale": "br"
                 }
                 </script>
             </div>
         </div>
-    </main>
 
-    <section class="world-news" id="news-feed"></section>
+        <div id="about-view">
+            <div class="content-text">
+                <h1>A Nova Era da Inteligência Financeira</h1>
+                <p>O <strong>ALPHAMARKETCAP</strong> é um terminal de alta performance projetado para investidores que não aceitam o comum. Nossa missão é transformar dados brutos em decisões estratégicas.</p>
+                <p>Unimos a robustez dos dados da B3 e NASDAQ com uma interface intuitiva e ferramentas de análise técnica avançadas.</p>
+            </div>
+        </div>
+    </main>
 </div>
 
 <div id="chart-modal">
-    <button class="close-btn" onclick="closeChart()">X</button>
-    <div class="modal-body">
-        <div id="chart-area" style="flex: 3; border-right: 1px solid var(--border)"></div>
-        <div id="desc-area" style="flex: 1; padding: 40px; overflow-y: auto; background: #000;"></div>
+    <button class="close-btn" onclick="document.getElementById('chart-modal').style.display='none'">X</button>
+    <div style="display:flex; width:100%; height:100%;">
+        <div id="chart-area" style="flex:3;"></div>
+        <div id="desc-area" style="flex:1; background:#000; padding:40px; border-left:1px solid var(--border); overflow-y:auto;"></div>
     </div>
 </div>
 
 <script>
     const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR9hPdpNw-jrALbP32-Pgqhwe_X98uaZht0tjtZXidCFwiXvXTjbJc5diOaI270W8m_hyHYpd5xwlQl/pub?gid=0&single=true&output=csv';
 
-    // TROCA DE SEÇÕES
-    function showSection(type) {
-        document.getElementById('terminal-view').style.display = type === 'terminal' ? 'block' : 'none';
-        document.getElementById('screener-view').style.display = type === 'screener' ? 'block' : 'none';
-        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-        event.currentTarget.classList.add('active');
+    function switchTab(id) {
+        document.querySelectorAll('main > div').forEach(d => d.classList.remove('active'));
+        document.getElementById(id + '-view').classList.add('active');
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        if(id !== 'about') event.currentTarget.classList.add('active');
     }
 
-    // CARREGAMENTO DE DADOS (PLANILHA)
-    async function fetchData() {
-        try {
-            const r = await fetch(SHEET_URL);
-            const t = await r.text();
-            const rows = t.split('\n').slice(1);
-            window.stocks = rows.map(row => {
-                const c = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-                return { 
-                    ticker: c[0]?.trim().replace(/"/g, ''), 
-                    name: c[1]?.trim().replace(/"/g, ''), 
-                    price: c[2], 
-                    pct: c[3], 
-                    sector: c[4]?.trim().replace(/"/g, ''), 
-                    desc: c[5]?.trim().replace(/"/g, '') 
-                };
-            }).filter(x => x.ticker);
-            renderGrid("Tecnologia");
-        } catch(e) { console.error("Erro ao carregar planilha"); }
+    async function loadData() {
+        const r = await fetch(SHEET_URL);
+        const t = await r.text();
+        const rows = t.split('\n').slice(1);
+        window.stocks = rows.map(row => {
+            const c = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+            return { ticker: c[0].trim(), name: c[1], price: c[2], pct: c[3], sector: c[4].trim(), desc: c[5] };
+        });
+        renderGrid("Tecnologia");
     }
 
-    function renderGrid(sector) {
-        const g = document.getElementById('main-grid'); 
-        g.innerHTML = '';
-        window.stocks.filter(x => x.sector.toUpperCase() === sector.toUpperCase()).forEach(x => {
-            const card = document.createElement('div'); 
-            card.className = 'card';
-            const isNeg = x.pct && x.pct.includes('-');
-            card.innerHTML = `
-                <div class="symbol">${x.ticker}</div>
-                <div class="price">R$ ${x.price}</div>
-                <div class="change ${isNeg ? 'neg' : 'pos'}">${x.pct}</div>`;
-            card.onclick = () => openChart(x);
+    function renderGrid(s) {
+        const g = document.getElementById('main-grid'); g.innerHTML = '';
+        window.stocks.filter(x => x.sector.toUpperCase() === s.toUpperCase()).forEach(x => {
+            const card = document.createElement('div'); card.className = 'card';
+            card.innerHTML = `<div style="color:var(--text-dim);font-size:11px;font-family:JetBrains Mono">${x.ticker}</div><div style="font-size:24px;margin:10px 0;font-family:JetBrains Mono">R$ ${x.price}</div><div style="color:${x.pct.includes('-')?'var(--down)':'var(--up)'};font-weight:800">${x.pct}</div>`;
+            card.onclick = () => {
+                document.getElementById('chart-modal').style.display = 'block';
+                document.getElementById('chart-area').innerHTML = `<iframe src="https://s.tradingview.com/widgetembed/?symbol=${x.ticker.split(':').pop()}&theme=dark" style="width:100%;height:100%;border:none"></iframe>`;
+                document.getElementById('desc-area').innerHTML = `<h2 style="color:var(--accent);margin-bottom:20px">${x.name}</h2><p style="color:#888;line-height:1.8;text-align:justify">${x.desc || 'Análise Alpha em processamento...'}</p>`;
+            };
             g.appendChild(card);
         });
     }
 
-    function openChart(s) {
-        document.getElementById('chart-modal').style.display = 'block';
-        const cleanTicker = s.ticker.split(':').pop();
-        document.getElementById('chart-area').innerHTML = `<iframe src="https://s.tradingview.com/widgetembed/?symbol=${cleanTicker}&theme=dark" style="width:100%;height:100%;border:none"></iframe>`;
-        document.getElementById('desc-area').innerHTML = `
-            <h2 style="color:var(--accent);margin-bottom:20px;font-weight:300">${s.name}</h2>
-            <div style="width:30px;height:2px;background:var(--accent);margin-bottom:20px"></div>
-            <p style="line-height:1.8;color:#888;text-align:justify;font-size:14px">${s.desc || 'Análise Alpha em processamento...'}</p>`;
-    }
-
-    function closeChart() { document.getElementById('chart-modal').style.display = 'none'; }
-    document.addEventListener('keydown', e => { if(e.key === 'Escape') closeChart(); });
-
-    // MENU LATERAL
     const sectors = ["Tecnologia", "Defesa", "Energia", "Bancos", "Commodities", "Refúgio"];
-    const menu = document.getElementById('sector-menu');
     sectors.forEach(s => {
-        const item = document.createElement('div');
-        item.className = 'nav-item';
-        item.innerText = s;
-        item.onclick = (e) => {
-            showSection('terminal');
-            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-            item.classList.add('active');
-            renderGrid(s);
-        };
-        menu.appendChild(item);
+        const btn = document.createElement('div'); btn.className = 'nav-item'; btn.innerText = s;
+        btn.onclick = () => { switchTab('terminal'); renderGrid(s); btn.classList.add('active'); };
+        document.getElementById('sector-btns').appendChild(btn);
     });
 
-    // RELÓGIO E NOTÍCIAS
+    loadData();
     setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString(); }, 1000);
-    fetchData();
 </script>
 </body>
 </html>
