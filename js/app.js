@@ -1,11 +1,13 @@
 window.addEventListener('load', () => {
     setTimeout(() => {
-        document.getElementById('splash-screen').style.opacity = '0';
+        const splash = document.getElementById('splash-screen');
+        const content = document.getElementById('site-content');
+        splash.style.opacity = '0';
         setTimeout(() => {
-            document.getElementById('splash-screen').style.display = 'none';
-            document.getElementById('site-content').style.display = 'block';
+            splash.style.display = 'none';
+            content.style.display = 'block';
             setTimeout(() => { 
-                document.getElementById('site-content').style.opacity = '1'; 
+                content.style.opacity = '1'; 
                 initApp();
             }, 50);
         }, 800);
@@ -29,30 +31,32 @@ function initApp() {
 }
 
 async function loadData() {
-    const res = await fetch(CONFIG.SHEET_URL);
-    const text = await res.text();
-    const rows = text.split('\n').slice(1);
-    const sectors = {};
-    const allStocks = [];
+    try {
+        const res = await fetch(CONFIG.SHEET_URL);
+        const text = await res.text();
+        const rows = text.split('\n').slice(1);
+        const sectors = {};
+        const allStocks = [];
 
-    rows.forEach(row => {
-        const c = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(item => item.replace(/"/g, '').trim());
-        if(c[0]) {
-            const s = {
-                ticker: c[0],
-                name: c[1] || c[0],
-                price: c[2],
-                pct: c[3]?.substring(0,6) || "0%",
-                sector: c[4] || "Outros",
-                rawPct: parseFloat(c[3]?.replace(',', '.') || 0)
-            };
-            allStocks.push(s);
-            if(!sectors[s.sector]) sectors[s.sector] = [];
-            sectors[s.sector].push(s);
-        }
-    });
-    renderHighlights(allStocks);
-    renderSectors(sectors);
+        rows.forEach(row => {
+            const c = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(item => item.replace(/"/g, '').trim());
+            if(c[0] && c[0] !== "") {
+                const s = {
+                    ticker: c[0],
+                    name: c[1] || c[0],
+                    price: c[2],
+                    pct: c[3]?.substring(0,6) || "0%",
+                    sector: c[4] || "Outros",
+                    rawPct: parseFloat(c[3]?.replace(',', '.') || 0)
+                };
+                allStocks.push(s);
+                if(!sectors[s.sector]) sectors[s.sector] = [];
+                sectors[s.sector].push(s);
+            }
+        });
+        renderHighlights(allStocks);
+        renderSectors(sectors);
+    } catch (e) { console.error("Erro ao carregar dados:", e); }
 }
 
 function renderHighlights(stocks) {
