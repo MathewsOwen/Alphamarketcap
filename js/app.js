@@ -12,6 +12,13 @@ window.addEventListener('load', () => {
     }, 3000);
 });
 
+function switchTab(id) {
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    event.currentTarget.classList.add('active');
+}
+
 function initApp() {
     new TradingView.widget({
         "container_id": "main-chart", "symbol": "BMFBOVESPA:IBOV",
@@ -26,31 +33,47 @@ async function loadData() {
     const text = await res.text();
     const rows = text.split('\n').slice(1);
     const sectors = {};
-    const highlights = document.getElementById('highlights-list');
-    highlights.innerHTML = "";
+    const allStocks = [];
 
-    rows.forEach((row, index) => {
-        const c = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+    rows.forEach(row => {
+        // Regex para remover aspas e separar por vírgula corretamente
+        const c = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(item => item.replace(/"/g, '').trim());
+        
         if(c[0]) {
             const s = {
-                ticker: c[0].replace(/"/g,''),
+                ticker: c[0],
+                name: c[1] || c[0],
                 price: c[2],
                 pct: c[3]?.substring(0,6) || "0%",
-                sector: (c[4] || "Outros").trim().replace(/"/g,'')
+                sector: c[4] || "Outros",
+                rawPct: parseFloat(c[3]?.replace(',', '.') || 0)
             };
+            allStocks.push(s);
             if(!sectors[s.sector]) sectors[s.sector] = [];
             sectors[s.sector].push(s);
-
-            // Preenche destaques (primeiros 6)
-            if(index < 6) {
-                highlights.innerHTML += `
-                    <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #2b2f3a;">
-                        <b>${s.ticker}</b> <span style="color:${s.pct.includes('-')?'var(--down)':'var(--up)'}">${s.pct}</span>
-                    </div>`;
-            }
         }
     });
+
+    renderHighlights(allStocks);
     renderSectors(sectors);
+}
+
+function renderHighlights(stocks) {
+    const gainers = [...stocks].sort((a, b) => b.rawPct - a.rawPct).slice(0, 8);
+    const losers = [...stocks].sort((a, b) => a.rawPct - b.rawPct).slice(0, 8);
+
+    const gainersDiv = document.getElementById('top-gainers');
+    const losersDiv = document.getElementById('top-losers');
+
+    const createList = (list) => list.map(s => `
+        <div class="side-item">
+            <div><b>${s.ticker}</b><br><small>${s.name}</small></div>
+            <span style="color:${s.rawPct >= 0 ? 'var(--up)' : 'var(--down)'}">${s.pct}</span>
+        </div>
+    `).join('');
+
+    gainersDiv.innerHTML = createList(gainers);
+    losersDiv.innerHTML = createList(losers);
 }
 
 function renderSectors(sectors) {
@@ -61,13 +84,17 @@ function renderSectors(sectors) {
         div.innerHTML = `<h2 class="sector-title">${name}</h2>`;
         const grid = document.createElement('div');
         grid.className = 'stocks-grid';
+        
         sectors[name].forEach(s => {
-            const isNeg = s.pct.includes('-');
+            const isNeg = s.rawPct < 0;
             grid.innerHTML += `
                 <div class="stock-card" onclick="window.location.href='detalhes.html?symbol=${s.ticker}'">
-                    <div style="color:var(--accent); font-weight:800; font-size:12px;">${s.ticker}</div>
+                    <div class="stock-name">${s.name}</div>
+                    <div class="stock-ticker">${s.ticker}</div>
                     <div class="price">R$ ${s.price}</div>
-                    <div style="color:${isNeg?'var(--down)':'var(--up)'}; font-weight:700;">${isNeg?'▼':'▲'} ${s.pct}</div>
+                    <div style="color:${isNeg?'var(--down)':'var(--up)'}; font-weight:700; font-size:13px;">
+                        ${isNeg?'▼':'▲'} ${s.pct}
+                    </div>
                 </div>`;
         });
         div.appendChild(grid);
