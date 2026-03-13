@@ -2,91 +2,29 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AlphaMarketCap | Premium Terminal</title>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@500;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
+    <title>AlphaMarketCap PRO</title>
+    <link rel="stylesheet" href="css/style.css?v=1.2">
 </head>
-<body class="terminal-body">
-
-    <div class="ticker-wrapper">
-        <div class="ticker-content" id="bankTicker"></div>
-    </div>
-    <div class="premium-divider"></div> <header class="main-header">
-        <div class="brand-group">
-            <div class="logo-icon">A</div>
-            <div class="logo-text">
-                <span class="main">ALPHAMARKETCAP</span>
-                <span class="version">CORE_V5.2 // PRO_ACCESS</span>
-            </div>
-        </div>
-        
-        <div class="system-stats">
-            <div class="stat-item">
-                <span class="label">LATENCY:</span>
-                <span class="value">12ms</span>
-            </div>
-            <div class="stat-item">
-                <span class="label">UTC:</span>
-                <span id="clock" class="value orbitron">00:00:00</span>
-            </div>
-        </div>
-
-        <button class="auth-btn" id="authBtn">SECURE_LOGIN</button>
-    </header>
-
-    <div class="app-container">
+<body>
+    <div class="ticker-wrapper"><div id="bankTicker" class="ticker-content"></div></div>
+    <div class="premium-line"></div>
+    
+    <div class="main-layout">
         <aside class="sidebar">
-            <nav id="mainNav">
-                <div class="nav-section-title">MAIN_MODULES</div>
-                <button class="nav-link active" data-target="dashboard">
-                    <span class="icon">📈</span> TERMINAL
-                </button>
-                <button class="nav-link" data-target="signals">
-                    <span class="icon">📡</span> QUANT_SIGNALS
-                </button>
-                <button class="nav-link" data-target="liquidity">
-                    <span class="icon">🌊</span> LIQUIDITY_MAP
-                </button>
+            <h2 class="logo">ALPHA</h2>
+            <nav>
+                <button class="nav-item active">TERMINAL</button>
+                <button class="nav-item">SIGNALS</button>
             </nav>
-            <div class="security-badge">
-                <div class="pulse-ring"></div>
-                <span>ENCRYPTED_NODE_01</span>
-            </div>
         </aside>
-
-        <main class="viewport">
-            <div class="view-grid active" id="view-dashboard">
-                <section class="glass-panel chart-area">
-                    <header class="panel-header">
-                        <span class="title">REAL_TIME_ENGINE // FEED_01</span>
-                        <div class="status-tag">LIVE_60FPS</div>
-                    </header>
-                    <div id="tradingview_alpha" class="tv-frame"></div>
-                </section>
-
-                <section class="glass-panel movers-area">
-                    <header class="panel-header">
-                        <span class="title">MARKET_WATCH_24H</span>
-                    </header>
-                    <div class="movers-container" id="moversList">
-                        </div>
-                </section>
-            </div>
-
-            <div class="glass-panel view-full hidden" id="view-signals">
-                <header class="panel-header">QUANTUM_SIGNALS_FEED</header>
-                <div class="empty-state">ESTABELECENDO CONEXÃO COM O SATÉLITE...</div>
-            </div>
-
-            <div class="glass-panel view-full hidden" id="view-liquidity">
-                <header class="panel-header">GLOBAL_LIQUIDITY_HEATMAP</header>
-                <div class="empty-state">MAPEANDO FLUXO DE CAPITAL GLOBAL...</div>
-            </div>
+        
+        <main class="content">
+            <div id="tv_chart_container"></div>
+            <div id="movers_list" class="movers"></div>
         </main>
     </div>
 
     <script src="https://s3.tradingview.com/tv.js"></script>
-    <script src="js/app.js"></script>
+    <script src="js/app.js?v=1.2"></script>
 </body>
 </html>
