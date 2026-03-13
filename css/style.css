@@ -1,43 +1,46 @@
 :root {
-    --navy: #000b1a;      /* Azul ainda mais profundo */
+    --navy: #000b1a;
     --navy-card: #001633;
-    --gold: #d4af37;      /* Dourado Metálico */
-    --gold-glow: rgba(212, 175, 55, 0.4);
+    --gold: #d4af37;
+    --gold-bright: #f1d592;
     --white: #f8f9fa;
     --green: #00e676;
     --red: #ff1744;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { background-color: var(--navy); color: var(--white); font-family: 'Inter', sans-serif; overflow-x: hidden; }
+body { background-color: var(--navy); color: var(--white); font-family: 'Inter', sans-serif; }
 
-.container { max-width: 1500px; margin: 0 auto; padding: 0 20px; }
+.container { max-width: 1650px; margin: 0 auto; padding: 0 20px; }
 
-/* Header e Logotipo */
-.header { border-bottom: 2px solid var(--gold); padding: 15px 0; background: linear-gradient(to bottom, #00122e, var(--navy)); }
-.logo-gold { font-family: 'Cinzel', serif; color: var(--gold); font-size: 26px; text-shadow: 0 0 10px var(--gold-glow); }
-.logo-white { font-family: 'Cinzel', serif; color: var(--white); font-size: 26px; }
+/* Ticker com Logos */
+.top-bar { background: #000; height: 45px; border-bottom: 1px solid var(--gold); overflow: hidden; display: flex; align-items: center; }
+.ticker-track { display: flex; white-space: nowrap; animation: slide 60s linear infinite; }
+.ticker-item { display: flex; align-items: center; padding: 0 30px; font-size: 12px; color: var(--gold); gap: 10px; }
+.ticker-item img { height: 18px; filter: grayscale(20%); }
 
-/* Tabs de Rankings */
-.tabs-ranking { display: flex; border-bottom: 1px solid var(--gold); margin-bottom: 15px; }
-.tab-btn { flex: 1; padding: 12px; background: none; border: none; color: #555; cursor: pointer; font-weight: bold; transition: 0.3s; }
-.tab-btn.active { color: var(--gold); border-bottom: 3px solid var(--gold); }
+/* Logo Estilizada */
+.logo-gold-stylized { font-family: 'Playfair Display', serif; font-style: italic; color: var(--gold); font-size: 32px; letter-spacing: -1px; text-shadow: 2px 2px 0px rgba(0,0,0,0.5); }
+.logo-white-stylized { font-family: 'Cinzel', serif; color: var(--white); font-size: 28px; font-weight: 300; }
 
-/* Card e Estilos Gerais */
-.card { background: var(--navy-card); border: 1px solid rgba(212, 175, 55, 0.2); border-radius: 4px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-.asset-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-weight: 600; }
+/* Botões Arredondados (Pills) */
+.nav-link-pill { background: rgba(255,255,255,0.05); border: 1px solid var(--gold); color: var(--white); padding: 12px 25px; border-radius: 50px; cursor: pointer; font-size: 12px; font-weight: bold; margin-left: 15px; transition: 0.3s; }
+.nav-link-pill.active { background: var(--gold); color: var(--navy); box-shadow: 0 0 15px var(--gold); }
 
-/* Notícias */
-.news-item { 
-    background: rgba(0,0,0,0.2); 
-    border-left: 4px solid var(--gold); 
-    padding: 15px; 
-    margin-bottom: 15px; 
-    animation: slideIn 0.5s ease-out; 
-}
-@keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+.pill-btn { flex: 1; padding: 10px; background: transparent; border: none; color: #555; cursor: pointer; border-radius: 30px; font-weight: bold; margin: 2px; }
+.pill-btn.active { background: var(--gold); color: var(--navy); }
+.tabs-ranking-pills { background: rgba(0,0,0,0.3); border-radius: 35px; display: flex; padding: 4px; border: 1px solid var(--border); margin-bottom: 20px; }
 
-.pulse-red { width: 10px; height: 10px; background: var(--red); border-radius: 50%; display: inline-block; margin-right: 10px; box-shadow: 0 0 10px var(--red); animation: pulse 1.5s infinite; }
-@keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+/* Layout Grid Aumentado */
+.main-grid { display: grid; grid-template-columns: 1fr 380px; gap: 25px; padding: 30px 0; }
+.card { background: var(--navy-card); border: 1px solid rgba(212, 175, 55, 0.2); border-radius: 15px; padding: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.6); }
 
+/* Gráfico */
+#tradingview_alpha { height: 650px; width: 100%; border-radius: 10px; overflow: hidden; }
+
+/* News */
+.news-item { background: rgba(0,0,0,0.3); border-radius: 12px; padding: 20px; border: 1px solid transparent; transition: 0.3s; cursor: pointer; text-decoration: none; color: inherit; display: block; margin-bottom: 15px; }
+.news-item:hover { border-color: var(--gold); background: rgba(212, 175, 55, 0.05); transform: translateY(-3px); }
+
+@keyframes slide { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 .hidden { display: none !important; }
