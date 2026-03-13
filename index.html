@@ -2,63 +2,58 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AlphaMarketCap | Inteligência Financeira</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=200">
+    <title>AlphaMarketCap | Global Intelligence</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css?v=301">
 </head>
-<body class="light-theme">
+<body class="gold-edition">
 
-    <div class="market-ticker">
-        <div class="ticker-track" id="bankTicker"></div>
+    <div class="top-bar">
+        <div class="ticker-track" id="globalTicker"></div>
     </div>
 
-    <header class="navbar">
-        <div class="container">
+    <header class="header">
+        <div class="container header-flex">
             <div class="brand">
-                <span class="logo">ALPHA</span><span class="logo-bold">MARKETCAP</span>
+                <span class="logo-gold">ALPHA</span><span class="logo-white">MARKETCAP</span>
             </div>
-            <nav class="main-nav">
-                <a href="#" class="active">Mercados</a>
-                <a href="#">Notícias</a>
-                <a href="#">Análise Quant</a>
-                <a href="#">Carteiras</a>
+            <nav class="nav">
+                <button class="nav-link active" onclick="switchTab('market')">MERCADOS</button>
+                <button class="nav-link" onclick="switchTab('news')">NOTÍCIAS VIVAS</button>
             </nav>
-            <div class="user-actions">
-                <button class="btn-login">Acessar Terminal</button>
-            </div>
         </div>
     </header>
 
-    <main class="content-wrapper">
-        <div class="container grid-main">
-            <section class="main-chart-card">
-                <div class="card-header">
-                    <div class="asset-info">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/4/4b/B3_Logo.png" alt="B3" class="asset-logo">
-                        <div>
-                            <h1>Ibovespa</h1>
-                            <span class="symbol">IBOV // Índice Bovespa</span>
-                        </div>
-                    </div>
-                    <div class="asset-price">
-                        <span class="current-price" id="mainPrice">128.450</span>
-                        <span class="change positive">+1.24%</span>
-                    </div>
-                </div>
-                <div id="tradingview_alpha" class="chart-container"></div>
-            </section>
+    <main class="container main-grid">
+        <section class="chart-section" id="marketView">
+            <div class="card chart-card">
+                <div id="tradingview_alpha"></div>
+            </div>
+        </section>
 
-            <aside class="market-sidebar">
-                <div class="sidebar-card">
-                    <h3>Mais lidas do mercado</h3>
-                    <div id="moversList" class="movers-minimal"></div>
+        <aside class="ranking-section" id="rankingView">
+            <div class="card">
+                <h3 class="gold-title">TOP 10 ALTAS (B3)</h3>
+                <div id="highList" class="asset-list"></div>
+                
+                <h3 class="gold-title mt-20">TOP 10 BAIXAS (B3)</h3>
+                <div id="lowList" class="asset-list"></div>
+            </div>
+        </aside>
+
+        <section class="news-section hidden" id="newsView">
+            <div class="card">
+                <div class="news-header">
+                    <h2 class="gold-title">WORLD NEWS FEED // 1min Update</h2>
+                    <span class="live-tag">LIVE</span>
                 </div>
-            </aside>
-        </div>
+                <div id="newsFeed" class="news-grid">
+                    </div>
+            </div>
+        </section>
     </main>
 
     <script src="https://s3.tradingview.com/tv.js"></script>
-    <script src="js/app.js?v=200"></script>
+    <script src="js/app.js?v=301"></script>
 </body>
 </html>
