@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AlphaMarketCap | Enterprise Terminal</title>
+    <title>AlphaMarketCap | Premium Terminal</title>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@500;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -12,66 +12,76 @@
     <div class="ticker-wrapper">
         <div class="ticker-content" id="bankTicker"></div>
     </div>
-    <div class="white-divider"></div>
+    <div class="premium-divider"></div> <header class="main-header">
+        <div class="brand-group">
+            <div class="logo-icon">A</div>
+            <div class="logo-text">
+                <span class="main">ALPHAMARKETCAP</span>
+                <span class="version">CORE_V5.2 // PRO_ACCESS</span>
+            </div>
+        </div>
+        
+        <div class="system-stats">
+            <div class="stat-item">
+                <span class="label">LATENCY:</span>
+                <span class="value">12ms</span>
+            </div>
+            <div class="stat-item">
+                <span class="label">UTC:</span>
+                <span id="clock" class="value orbitron">00:00:00</span>
+            </div>
+        </div>
 
-    <header class="main-header">
-        <div class="brand">
-            <span class="logo-main">ALPHAMARKETCAP</span>
-            <span class="logo-sub">// CORE_V5_PRO</span>
-        </div>
-        <div class="clock-panel">
-            <span class="label">UTC_TIME:</span>
-            <span id="clock" class="orbitron">00:00:00</span>
-        </div>
-        <button class="btn-terminal" id="authBtn">AUTH_CONNECTION</button>
+        <button class="auth-btn" id="authBtn">SECURE_LOGIN</button>
     </header>
 
-    <div class="app-body">
+    <div class="app-container">
         <aside class="sidebar">
             <nav id="mainNav">
-                <div class="nav-label">>>_OPERATIONS</div>
-                <button class="nav-btn active" data-target="dashboard">
-                    <span class="icon">📊</span> DASHBOARD
+                <div class="nav-section-title">MAIN_MODULES</div>
+                <button class="nav-link active" data-target="dashboard">
+                    <span class="icon">📈</span> TERMINAL
                 </button>
-                <button class="nav-btn" data-target="signals">
+                <button class="nav-link" data-target="signals">
                     <span class="icon">📡</span> QUANT_SIGNALS
                 </button>
-                <button class="nav-btn" data-target="liquidity">
-                    <span class="icon">💧</span> GLOBAL_LIQUIDITY
+                <button class="nav-link" data-target="liquidity">
+                    <span class="icon">🌊</span> LIQUIDITY_MAP
                 </button>
             </nav>
-            <div class="sidebar-status">
-                <span class="pulse green"></span> CONNECTION_SECURE
+            <div class="security-badge">
+                <div class="pulse-ring"></div>
+                <span>ENCRYPTED_NODE_01</span>
             </div>
         </aside>
 
-        <main class="main-view">
-            <div class="grid-layout active-view" id="view-dashboard">
-                <section class="panel chart-panel neon-border">
+        <main class="viewport">
+            <div class="view-grid active" id="view-dashboard">
+                <section class="glass-panel chart-area">
                     <header class="panel-header">
-                        <h2>BMFBOVESPA:IBOV // LIVE_FEED</h2>
-                        <span class="tag green">REAL-TIME</span>
+                        <span class="title">REAL_TIME_ENGINE // FEED_01</span>
+                        <div class="status-tag">LIVE_60FPS</div>
                     </header>
-                    <div id="tradingview_alpha" class="tv-container"></div>
+                    <div id="tradingview_alpha" class="tv-frame"></div>
                 </section>
 
-                <section class="panel movers-panel neon-border">
+                <section class="glass-panel movers-area">
                     <header class="panel-header">
-                        <h2>ALPHA_ALPHA_MOVERS</h2>
+                        <span class="title">MARKET_WATCH_24H</span>
                     </header>
-                    <div class="movers-content" id="moversList">
+                    <div class="movers-container" id="moversList">
                         </div>
                 </section>
             </div>
-            
-            <div class="panel hidden-view neon-border" id="view-signals">
-                <header class="panel-header">📡 QUANTUM_SIGNALS_FEED</header>
-                <div class="placeholder-content">AGUARDANDO CONEXÃO FIREBASE...</div>
+
+            <div class="glass-panel view-full hidden" id="view-signals">
+                <header class="panel-header">QUANTUM_SIGNALS_FEED</header>
+                <div class="empty-state">ESTABELECENDO CONEXÃO COM O SATÉLITE...</div>
             </div>
 
-            <div class="panel hidden-view neon-border" id="view-liquidity">
-                <header class="panel-header">💧 GLOBAL_LIQUIDITY_MAP</header>
-                <div class="placeholder-content">MAPA DE CALOR EM DESENVOLVIMENTO.</div>
+            <div class="glass-panel view-full hidden" id="view-liquidity">
+                <header class="panel-header">GLOBAL_LIQUIDITY_HEATMAP</header>
+                <div class="empty-state">MAPEANDO FLUXO DE CAPITAL GLOBAL...</div>
             </div>
         </main>
     </div>
