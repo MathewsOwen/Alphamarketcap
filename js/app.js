@@ -1,66 +1,39 @@
-const Engine = {
-    banks: ["J.P. MORGAN", "GOLDMAN SACHS", "MORGAN STANLEY", "CITIGROUP", "HSBC", "BOFA", "BARCLAYS", "UBS", "DEUTSCHE BANK", "WELLS FARGO", "BNP PARIBAS", "SANTANDER", "NOMURA", "MIZUHO", "CREDIT AGRICOLE", "SOCIETE GENERALE", "UBS GROUP", "RBC", "TD BANK", "MITSUBISHI"],
+// Configuração do Gráfico de Impacto
+const ctx = document.getElementById('impactChart').getContext('2d');
 
-    init() {
-        this.renderTicker();
-        this.renderChart();
-        this.renderMovers();
-        this.startClock();
-        this.marketLoop();
+const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+gradient.addColorStop(0, 'rgba(0, 71, 187, 0.4)');
+gradient.addColorStop(1, 'rgba(0, 71, 187, 0)');
+
+const impactChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul'],
+        datasets: [{
+            label: 'Crescimento do Mercado',
+            data: [30, 45, 38, 60, 55, 80, 95],
+            borderColor: '#0047bb',
+            backgroundColor: gradient,
+            fill: true,
+            tension: 0.4,
+            borderWidth: 3,
+            pointRadius: 0
+        }]
     },
-
-    renderTicker() {
-        const ticker = document.getElementById('bankTicker');
-        // Duplicamos a lista para o efeito de loop infinito
-        [...this.banks, ...this.banks].forEach(bank => {
-            const span = document.createElement('span');
-            span.className = 'bank-item';
-            const pts = (Math.random() * 100 + 10).toFixed(2);
-            span.innerHTML = `${bank} <span style="color:#00ff6a">${pts} PTS</span>`;
-            ticker.appendChild(span);
-        });
-    },
-
-    renderChart() {
-        const chart = document.getElementById('mainChart');
-        for(let i=0; i < 35; i++) {
-            const candle = document.createElement('div');
-            candle.className = 'candle';
-            candle.style.height = `${Math.floor(Math.random() * 60) + 20}%`;
-            candle.onclick = () => console.log("Analisando Ativo...");
-            chart.appendChild(candle);
+    options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: {
+            x: { grid: { display: false } },
+            y: { grid: { color: '#f0f0f0' } }
         }
-    },
-
-    renderMovers() {
-        const gainers = ["PETR4", "VALE3", "ITUB4", "BBDC4"];
-        const losers = ["MGLU3", "AMER3", "VIIA3", "AZUL4"];
-
-        const listGain = document.getElementById('gainers');
-        const listLoss = document.getElementById('losers');
-
-        gainers.forEach(s => {
-            listGain.innerHTML += `<div class="mover-item" onclick="alert('Analisando Compra em ${s}')"><span>${s}</span><span class="gain">+${(Math.random()*4).toFixed(2)}%</span></div>`;
-        });
-        losers.forEach(s => {
-            listLoss.innerHTML += `<div class="mover-item" onclick="alert('Analisando Venda em ${s}')"><span>${s}</span><span class="loss">-${(Math.random()*4).toFixed(2)}%</span></div>`;
-        });
-    },
-
-    startClock() {
-        setInterval(() => {
-            document.getElementById('clock').innerText = new Date().toLocaleTimeString();
-        }, 1000);
-    },
-
-    marketLoop() {
-        setInterval(() => {
-            document.querySelectorAll('.candle').forEach(c => {
-                let h = parseFloat(c.style.height);
-                c.style.height = `${Math.max(15, Math.min(95, h + (Math.random() * 10 - 5)))}%`;
-            });
-        }, 1000);
     }
-};
+});
 
-document.addEventListener('DOMContentLoaded', () => Engine.init());
+// Simulação de atualização em tempo real
+setInterval(() => {
+    const newData = impactChart.data.datasets[0].data;
+    newData.shift();
+    newData.push(Math.floor(Math.random() * (100 - 70 + 1) + 70));
+    impactChart.update();
+}, 3000);
