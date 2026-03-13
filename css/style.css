@@ -10,7 +10,6 @@ body {
     overflow: hidden;
 }
 
-/* Header Estilo Terminal */
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -34,16 +33,12 @@ body {
     font-weight: bold;
 }
 
-.btn-access:hover {
-    background: #00f3ff;
-    color: #000;
-}
+.btn-access:hover { background: #00f3ff; color: #000; }
 
-/* Layout Principal */
 .app-container { display: flex; flex: 1; }
 
 .sidebar {
-    width: 220px;
+    width: 200px;
     background: #050505;
     border-right: 1px solid #111;
     padding-top: 20px;
@@ -61,7 +56,6 @@ body {
     border-left: 3px solid #00f3ff;
 }
 
-/* Área do Gráfico */
 .terminal-view { flex: 1; padding: 20px; display: flex; flex-direction: column; gap: 20px; }
 
 .chart-section {
@@ -90,7 +84,6 @@ body {
     transition: height 0.5s ease;
 }
 
-/* Grid Inferior */
 .data-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
 .data-card {
     background: #050505;
