@@ -1,52 +1,76 @@
 /**
- * AlphaMarketCap Core Engine
- * Versão 3.1 - Profissional
+ * AlphaMarketCap Engine V4
+ * Arquitetura Senior: Modular e Data-Driven
  */
 
-const App = {
+const Engine = {
+    banks: ["J.P. Morgan", "Goldman Sachs", "Morgan Stanley", "Citigroup", "HSBC", "BofA", "Barclays", "UBS", "Deutsche Bank", "Wells Fargo", "Credit Agricole", "BNP Paribas", "Santander", "Scotiabank", "BMO", "Société Générale", "Nomura", "Mizuho", "Standard Chartered", "Commerzbank"],
+    
     init() {
+        this.renderTicker();
         this.renderChart();
-        this.startPricePulse();
-        this.setupEventListeners();
-        console.log("AlphaMarketCap: Core Engine Ready.");
+        this.renderMovers();
+        this.startClock();
+        this.setupRealTime();
     },
 
-    renderChart() {
-        const container = document.getElementById('chartContainer');
-        const candleCount = 40;
-
-        for (let i = 0; i < candleCount; i++) {
-            const candle = document.createElement('div');
-            candle.className = 'candle';
-            candle.style.height = `${Math.floor(Math.random() * 60) + 20}%`;
-            container.appendChild(candle);
-        }
-    },
-
-    startPricePulse() {
-        setInterval(() => {
-            const candles = document.querySelectorAll('.candle');
-            candles.forEach(c => {
-                const currentHeight = parseFloat(c.style.height);
-                const volatility = (Math.random() * 10) - 5;
-                const newHeight = Math.max(10, Math.min(95, currentHeight + volatility));
-                c.style.height = `${newHeight}%`;
-            });
-        }, 800);
-    },
-
-    setupEventListeners() {
-        const loginBtn = document.getElementById('loginBtn');
-        loginBtn.addEventListener('click', () => {
-            this.logActivity("Login Attempt via Secure Gateway");
-            alert("SISTEMA CORPORATIVO: Aguardando integração final do Firebase.");
+    renderTicker() {
+        const ticker = document.getElementById('bankTicker');
+        this.banks.forEach(bank => {
+            const span = document.createElement('span');
+            span.className = 'bank-item';
+            const points = (Math.random() * 1000 + 500).toFixed(2);
+            span.innerHTML = `${bank} <span style="color:#00ff6a">${points}</span>`;
+            ticker.appendChild(span);
         });
     },
 
-    logActivity(msg) {
-        const now = new Date().toLocaleTimeString();
-        console.log(`[${now}] ALPHA_LOG: ${msg}`);
+    renderChart() {
+        const chart = document.getElementById('mainChart');
+        for(let i=0; i < 40; i++) {
+            const candle = document.createElement('div');
+            candle.className = 'candle';
+            candle.style.height = `${Math.random() * 80 + 10}%`;
+            // Ação ao clicar na vela (interatividade)
+            candle.onclick = () => alert(`DETALHES_DO_ATIVO: Nível de volume em ${candle.style.height}`);
+            chart.appendChild(candle);
+        }
+    },
+
+    renderMovers() {
+        const gainers = document.getElementById('gainers');
+        const losers = document.getElementById('losers');
+
+        const stocks = ["AAPL", "TSLA", "NVDA", "AMZN", "META", "GOOGL"];
+        
+        stocks.forEach((s, i) => {
+            const div = document.createElement('div');
+            div.className = 'mover-item';
+            if(i % 2 === 0) {
+                div.innerHTML = `<span>${s}</span> <span class="gain">+${(Math.random()*5).toFixed(2)}%</span>`;
+                gainers.appendChild(div);
+            } else {
+                div.innerHTML = `<span>${s}</span> <span class="loss">-${(Math.random()*5).toFixed(2)}%</span>`;
+                losers.appendChild(div);
+            }
+        });
+    },
+
+    startClock() {
+        setInterval(() => {
+            document.getElementById('clock').innerText = new Date().toLocaleTimeString();
+        }, 1000);
+    },
+
+    setupRealTime() {
+        // Animação das velas para simular mercado vivo
+        setInterval(() => {
+            document.querySelectorAll('.candle').forEach(c => {
+                const h = parseFloat(c.style.height);
+                c.style.height = `${Math.max(10, Math.min(95, h + (Math.random() * 10 - 5)))}%`;
+            });
+        }, 1000);
     }
 };
 
-document.addEventListener('DOMContentLoaded', () => App.init());
+document.addEventListener('DOMContentLoaded', () => Engine.init());
