@@ -1,50 +1,43 @@
 :root {
-    --navy: #00122e;      /* Azul Marinho Profundo */
-    --navy-light: #001e4d;
-    --gold: #c5a059;      /* Dourado Nobre */
-    --gold-bright: #e2c275;
-    --white: #ffffff;
-    --green: #00ff8c;
-    --red: #ff3c5f;
-    --border: rgba(197, 160, 89, 0.2);
+    --navy: #000b1a;      /* Azul ainda mais profundo */
+    --navy-card: #001633;
+    --gold: #d4af37;      /* Dourado Metálico */
+    --gold-glow: rgba(212, 175, 55, 0.4);
+    --white: #f8f9fa;
+    --green: #00e676;
+    --red: #ff1744;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { background-color: var(--navy); color: var(--white); font-family: 'Inter', sans-serif; }
+body { background-color: var(--navy); color: var(--white); font-family: 'Inter', sans-serif; overflow-x: hidden; }
 
-.container { max-width: 1400px; margin: 0 auto; padding: 0 20px; }
+.container { max-width: 1500px; margin: 0 auto; padding: 0 20px; }
 
-/* Ticker Dourado */
-.top-bar { background: #000; height: 35px; border-bottom: 1px solid var(--gold); overflow: hidden; display: flex; align-items: center; }
-.ticker-track { display: flex; white-space: nowrap; animation: slide 40s linear infinite; font-size: 11px; color: var(--gold); }
+/* Header e Logotipo */
+.header { border-bottom: 2px solid var(--gold); padding: 15px 0; background: linear-gradient(to bottom, #00122e, var(--navy)); }
+.logo-gold { font-family: 'Cinzel', serif; color: var(--gold); font-size: 26px; text-shadow: 0 0 10px var(--gold-glow); }
+.logo-white { font-family: 'Cinzel', serif; color: var(--white); font-size: 26px; }
 
-/* Header */
-.header { background: var(--navy); padding: 20px 0; border-bottom: 1px solid var(--border); }
-.header-flex { display: flex; justify-content: space-between; align-items: center; }
-.logo-gold { font-family: 'Cinzel', serif; color: var(--gold); font-size: 24px; letter-spacing: 2px; }
-.logo-white { font-family: 'Cinzel', serif; color: var(--white); font-size: 24px; }
+/* Tabs de Rankings */
+.tabs-ranking { display: flex; border-bottom: 1px solid var(--gold); margin-bottom: 15px; }
+.tab-btn { flex: 1; padding: 12px; background: none; border: none; color: #555; cursor: pointer; font-weight: bold; transition: 0.3s; }
+.tab-btn.active { color: var(--gold); border-bottom: 3px solid var(--gold); }
 
-.nav-link { background: none; border: none; color: var(--white); margin-left: 30px; cursor: pointer; font-weight: bold; font-size: 13px; letter-spacing: 1px; transition: 0.3s; }
-.nav-link.active { color: var(--gold); border-bottom: 2px solid var(--gold); padding-bottom: 5px; }
+/* Card e Estilos Gerais */
+.card { background: var(--navy-card); border: 1px solid rgba(212, 175, 55, 0.2); border-radius: 4px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+.asset-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-weight: 600; }
 
-/* Layout Grid */
-.main-grid { display: grid; grid-template-columns: 1fr 350px; gap: 20px; padding: 30px 0; }
-.card { background: var(--navy-light); border: 1px solid var(--border); border-radius: 4px; padding: 20px; }
+/* Notícias */
+.news-item { 
+    background: rgba(0,0,0,0.2); 
+    border-left: 4px solid var(--gold); 
+    padding: 15px; 
+    margin-bottom: 15px; 
+    animation: slideIn 0.5s ease-out; 
+}
+@keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
 
-/* Chart */
-#tradingview_alpha { height: 600px; }
+.pulse-red { width: 10px; height: 10px; background: var(--red); border-radius: 50%; display: inline-block; margin-right: 10px; box-shadow: 0 0 10px var(--red); animation: pulse 1.5s infinite; }
+@keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
 
-/* Rankings */
-.gold-title { color: var(--gold); font-size: 14px; letter-spacing: 1px; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 15px; }
-.asset-list { display: flex; flex-direction: column; gap: 10px; }
-.asset-row { display: flex; justify-content: space-between; font-size: 13px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
-
-/* News View */
-.news-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
-.news-item { padding: 15px; border-left: 3px solid var(--gold); background: rgba(255,255,255,0.03); }
-.news-item small { color: var(--gold); font-size: 10px; }
-.news-item h4 { margin-top: 5px; font-size: 14px; }
-
-.hidden { display: none; }
-.mt-20 { margin-top: 25px; }
-@keyframes slide { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.hidden { display: none !important; }
