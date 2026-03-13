@@ -1,5 +1,4 @@
 const AlphaCore = {
-    // Dados Fixos
     banks: ["J.P. MORGAN", "GOLDMAN SACHS", "CITIGROUP", "BOFA", "MORGAN STANLEY", "HSBC", "UBS", "BARCLAYS", "BNP PARIBAS", "SANTANDER"],
     assets: [
         { s: "PETR4", n: "Petrobras", t: "up" },
@@ -13,12 +12,17 @@ const AlphaCore = {
     init() {
         this.renderTicker();
         this.renderMovers();
-        this.initTV("BMFBOVESPA:IBOV");
-        this.initNav();
         this.startClock();
+        // Espera um pouco para o script do TradingView estar pronto
+        setTimeout(() => this.initTV("BMFBOVESPA:IBOV"), 500);
     },
 
     initTV(symbol) {
+        if (typeof TradingView === 'undefined') {
+            console.error("Erro: TradingView não carregado.");
+            return;
+        }
+        document.getElementById('tradingview_alpha').innerHTML = '';
         new TradingView.widget({
             "autosize": true,
             "symbol": symbol,
@@ -27,19 +31,16 @@ const AlphaCore = {
             "theme": "dark",
             "style": "1",
             "locale": "br",
-            "toolbar_bg": "#000000",
-            "enable_publishing": false,
-            "hide_top_toolbar": false,
             "container_id": "tradingview_alpha",
             "backgroundColor": "#050505",
-            "gridColor": "#151515"
+            "gridColor": "#111"
         });
     },
 
     renderTicker() {
         const div = document.getElementById('bankTicker');
         [...this.banks, ...this.banks].forEach(b => {
-            div.innerHTML += `<div class="bank-unit">${b} <b>+${(Math.random()*3).toFixed(2)}%</b></div>`;
+            div.innerHTML += `<div class="bank-unit">${b} <span>+${(Math.random()*3).toFixed(2)}%</span></div>`;
         });
     },
 
@@ -48,33 +49,15 @@ const AlphaCore = {
         this.assets.forEach(a => {
             const row = document.createElement('div');
             row.className = 'mover-row';
-            row.innerHTML = `<span>${a.s} <small style="color:#333;margin-left:5px">${a.n}</small></span>
-                             <span class="${a.t}">${a.t === 'up' ? '+' : '-'}${(Math.random()*5).toFixed(2)}%</span>`;
+            row.innerHTML = `<span>${a.s}</span><span class="${a.t}">${a.t === 'up' ? '+' : '-'}${(Math.random()*5).toFixed(2)}%</span>`;
             row.onclick = () => this.initTV(`BMFBOVESPA:${a.s}`);
             list.appendChild(row);
         });
     },
 
-    initNav() {
-        const btns = document.querySelectorAll('.nav-link');
-        btns.forEach(btn => {
-            btn.onclick = () => {
-                btns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                
-                // Switch de views
-                const target = btn.getAttribute('data-target');
-                document.querySelectorAll('.viewport > div').forEach(v => v.classList.add('hidden'));
-                const targetEl = document.getElementById(`view-${target}`);
-                if(target === 'dashboard') targetEl.classList.add('active');
-                targetEl.classList.remove('hidden');
-            };
-        });
-    },
-
     startClock() {
         setInterval(() => {
-            document.getElementById('clock').innerText = new Date().toLocaleTimeString('pt-BR');
+            document.getElementById('clock').innerText = new Date().toLocaleTimeString();
         }, 1000);
     }
 };
