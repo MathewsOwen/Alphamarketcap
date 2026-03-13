@@ -1,87 +1,26 @@
-:root {
-    --primary-color: #0047bb; /* Troque pela cor da sua marca */
-    --secondary-color: #00d4ff;
-    --dark-bg: #0a0e14;
-    --text-light: #f4f4f4;
-}
+:root { --bg: #050505; --accent: #00f3ff; --green: #00ff6a; --red: #ff3c3c; --border: #1a1a1a; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--bg); color: #e0e0e0; font-family: 'JetBrains Mono', monospace; overflow: hidden; height: 100vh; }
 
-body {
-    margin: 0;
-    font-family: 'Inter', sans-serif;
-    background-color: #ffffff;
-    color: #333;
-    overflow-x: hidden;
-}
+.ticker-wrapper { background: #000; height: 35px; border-bottom: 1px solid var(--border); overflow: hidden; display: flex; align-items: center; }
+.ticker-content { display: flex; white-space: nowrap; animation: marquee 40s linear infinite; }
+.bank-item { padding: 0 40px; font-size: 11px; }
+@keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
 
-/* Navbar Estilo B3 */
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 5%;
-    border-bottom: 1px solid #eee;
-    background: #fff;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-}
+.main-header { height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 30px; border-bottom: 1px solid var(--border); }
+.logo { font-weight: bold; color: var(--accent); letter-spacing: 3px; }
 
-.logo { font-weight: 800; font-size: 1.5rem; letter-spacing: -1px; }
-.logo span { color: var(--primary-color); }
+.main-container { display: flex; height: calc(100vh - 95px); }
+.control-sidebar { width: 220px; border-right: 1px solid var(--border); }
+.nav-btn { width: 100%; padding: 18px 25px; background: none; border: none; color: #444; text-align: left; cursor: pointer; color: inherit; }
+.nav-btn.active { color: var(--accent); background: rgba(0, 243, 255, 0.05); border-right: 2px solid var(--accent); }
 
-.nav-links { list-style: none; display: flex; gap: 30px; }
-.nav-links a { text-decoration: none; color: #444; font-weight: 500; transition: 0.3s; }
-.nav-links a:hover { color: var(--primary-color); }
+.viewport { flex: 1; padding: 20px; }
+.workspace { display: grid; grid-template-columns: 1fr 300px; gap: 20px; height: 100%; }
+.chart-box, .movers-panel { background: #0a0a0a; border: 1px solid var(--border); display: flex; flex-direction: column; }
+.chart-display { flex: 1; display: flex; align-items: flex-end; padding: 20px; gap: 8px; }
+.candle { flex: 1; background: var(--accent); min-width: 6px; box-shadow: 0 0 10px rgba(0,243,255,0.2); transition: height 0.6s ease; }
 
-.btn-acesso {
-    background: var(--primary-color);
-    color: #fff !important;
-    padding: 10px 20px;
-    border-radius: 4px;
-}
-
-/* Hero Section com Gráfico */
-.hero {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: center;
-    padding: 80px 5%;
-    background: linear-gradient(135deg, #fdfdfd 0%, #f4f7ff 100%);
-    min-height: 60vh;
-}
-
-.hero-content h1 { font-size: 3.5rem; line-height: 1.1; margin-bottom: 20px; }
-.hero-content h1 span { color: var(--primary-color); }
-
-.hero-chart {
-    background: #fff;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.05);
-}
-
-/* Ticker (Barra de Dados) */
-.ticker-wrap {
-    width: 100%;
-    overflow: hidden;
-    background: var(--dark-bg);
-    color: white;
-    padding: 10px 0;
-}
-
-.ticker {
-    display: flex;
-    animation: ticker 30s linear infinite;
-}
-
-.ticker__item {
-    padding: 0 40px;
-    white-space: nowrap;
-    font-size: 0.9rem;
-    font-weight: bold;
-}
-
-@keyframes ticker {
-    0% { transform: translateX(100%); }
-    100% { transform: translateX(-100%); }
-}
+.panel-header { padding: 12px; background: #000; font-size: 10px; color: #666; border-bottom: 1px solid var(--border); }
+.mover-item { display: flex; justify-content: space-between; padding: 10px; font-size: 12px; border-bottom: 1px solid #111; }
+.gain { color: var(--green); } .loss { color: var(--red); }
