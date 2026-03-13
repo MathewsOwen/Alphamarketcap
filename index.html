@@ -3,60 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AlphaMarketCap | Premium Terminal</title>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@500;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=101">
+    <title>AlphaMarketCap | Inteligência Financeira</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css?v=200">
 </head>
-<body class="terminal-body">
+<body class="light-theme">
 
-    <div class="ticker-wrapper">
-        <div class="ticker-content" id="bankTicker"></div>
+    <div class="market-ticker">
+        <div class="ticker-track" id="bankTicker"></div>
     </div>
-    <div class="premium-divider"></div>
 
-    <header class="main-header">
-        <div class="brand">
-            <div class="logo-box">A</div>
-            <div class="logo-text">
-                <span class="logo-main">ALPHAMARKETCAP</span>
-                <span class="logo-sub">// CORE_V5.2_PRO</span>
+    <header class="navbar">
+        <div class="container">
+            <div class="brand">
+                <span class="logo">ALPHA</span><span class="logo-bold">MARKETCAP</span>
+            </div>
+            <nav class="main-nav">
+                <a href="#" class="active">Mercados</a>
+                <a href="#">Notícias</a>
+                <a href="#">Análise Quant</a>
+                <a href="#">Carteiras</a>
+            </nav>
+            <div class="user-actions">
+                <button class="btn-login">Acessar Terminal</button>
             </div>
         </div>
-        <div class="clock-panel">
-            <span id="clock" class="orbitron">00:00:00</span>
-        </div>
-        <button class="btn-terminal">SECURE_AUTH</button>
     </header>
 
-    <div class="app-body">
-        <aside class="sidebar">
-            <nav id="mainNav">
-                <div class="nav-label">COMMAND_CENTER</div>
-                <button class="nav-btn active" data-target="dashboard">TERMINAL</button>
-                <button class="nav-btn" data-target="signals">SIGNALS</button>
-                <button class="nav-btn" data-target="liquidity">LIQUIDITY</button>
-            </nav>
-            <div class="status-bar">
-                <span class="pulse"></span> LIVE_CONNECTION
-            </div>
-        </aside>
+    <main class="content-wrapper">
+        <div class="container grid-main">
+            <section class="main-chart-card">
+                <div class="card-header">
+                    <div class="asset-info">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/4/4b/B3_Logo.png" alt="B3" class="asset-logo">
+                        <div>
+                            <h1>Ibovespa</h1>
+                            <span class="symbol">IBOV // Índice Bovespa</span>
+                        </div>
+                    </div>
+                    <div class="asset-price">
+                        <span class="current-price" id="mainPrice">128.450</span>
+                        <span class="change positive">+1.24%</span>
+                    </div>
+                </div>
+                <div id="tradingview_alpha" class="chart-container"></div>
+            </section>
 
-        <main class="main-view">
-            <div class="grid-layout" id="view-dashboard">
-                <section class="panel chart-panel">
-                    <header class="panel-header">TRADINGVIEW_LIVE_FEED</header>
-                    <div id="tradingview_alpha" class="tv-container"></div>
-                </section>
-
-                <section class="panel movers-panel">
-                    <header class="panel-header">MARKET_WATCH</header>
-                    <div class="movers-content" id="moversList"></div>
-                </section>
-            </div>
-        </main>
-    </div>
+            <aside class="market-sidebar">
+                <div class="sidebar-card">
+                    <h3>Mais lidas do mercado</h3>
+                    <div id="moversList" class="movers-minimal"></div>
+                </div>
+            </aside>
+        </div>
+    </main>
 
     <script src="https://s3.tradingview.com/tv.js"></script>
-    <script src="js/app.js?v=101"></script>
+    <script src="js/app.js?v=200"></script>
 </body>
 </html>
