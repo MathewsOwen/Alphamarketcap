@@ -1,18 +1,20 @@
 const AlphaCore = {
-    banks: ["J.P. MORGAN", "GOLDMAN SACHS", "MORGAN STANLEY", "CITIGROUP", "HSBC", "BOFA", "BARCLAYS", "UBS", "DEUTSCHE BANK", "WELLS FARGO", "BNP PARIBAS", "SANTANDER", "NOMURA", "MIZUHO", "CREDIT AGRICOLE", "SOCIETE GENERALE", "UBS GROUP", "RBC", "TD BANK", "MITSUBISHI"],
-    
-    // Ações da tua planilha
-    gainers: ["PETR4", "VALE3", "ITUB4", "NVDA", "TSLA"],
-    losers: ["MGLU3", "AMER3", "AZUL4", "INTC", "PYPL"],
+    banks: ["J.P. MORGAN", "GOLDMAN SACHS", "MORGAN STANLEY", "CITIGROUP", "HSBC", "BOFA", "BARCLAYS", "UBS", "DEUTSCHE BANK", "WELLS FARGO"],
+    assets: [
+        { s: "PETR4", type: "up" }, { s: "VALE3", type: "up" }, { s: "ITUB4", type: "up" },
+        { s: "MGLU3", type: "down" }, { s: "AMER3", type: "down" }, { s: "AZUL4", type: "down" }
+    ],
 
     init() {
-        this.buildTicker();
-        this.buildMovers();
-        this.loadTradingView("BMFBOVESPA:IBOV"); // Inicia com o Ibovespa
-        this.launchClock();
+        this.renderTicker();
+        this.renderMovers();
+        this.initTradingView("BMFBOVESPA:IBOV");
+        this.initNavigation();
+        this.startClock();
     },
 
-    loadTradingView(symbol) {
+    initTradingView(symbol) {
+        document.getElementById('tradingview_alpha').innerHTML = '';
         new TradingView.widget({
             "autosize": true,
             "symbol": symbol,
@@ -21,43 +23,51 @@ const AlphaCore = {
             "theme": "dark",
             "style": "1",
             "locale": "br",
-            "toolbar_bg": "#050505",
-            "enable_publishing": false,
-            "hide_top_toolbar": false,
             "container_id": "tradingview_alpha",
             "backgroundColor": "#080808",
-            "gridColor": "#1a1a1a"
+            "gridColor": "#151515"
         });
     },
 
-    buildTicker() {
+    initNavigation() {
+        const btns = document.querySelectorAll('.nav-btn');
+        btns.forEach(btn => {
+            btn.onclick = () => {
+                btns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                // Esconde todas as views
+                document.getElementById('view-dashboard').style.display = 'none';
+                document.getElementById('view-signals').style.display = 'none';
+                document.getElementById('view-liquidity').style.display = 'none';
+
+                // Mostra a selecionada
+                const target = btn.getAttribute('data-target');
+                document.getElementById(`view-${target}`).style.display = 
+                    target === 'dashboard' ? 'grid' : 'block';
+            };
+        });
+    },
+
+    renderTicker() {
         const container = document.getElementById('bankTicker');
         [...this.banks, ...this.banks].forEach(b => {
-            const div = document.createElement('div');
-            div.className = 'bank-unit';
-            div.innerHTML = `${b} <span>+${(Math.random()*2).toFixed(2)}%</span>`;
-            container.appendChild(div);
+            container.innerHTML += `<div class="bank-unit">${b} <span>+${(Math.random()*3).toFixed(2)}%</span></div>`;
         });
     },
 
-    buildMovers() {
-        const gCont = document.getElementById('gainers');
-        const lCont = document.getElementById('losers');
-        
-        const createRow = (s, isUp) => {
+    renderMovers() {
+        const list = document.getElementById('moversList');
+        this.assets.forEach(item => {
             const row = document.createElement('div');
             row.className = 'mover-row';
-            row.innerHTML = `<span>${s}</span><span class="${isUp ? 'up' : 'down'}">${isUp ? '+' : '-'}${(Math.random()*5).toFixed(2)}%</span>`;
-            // AO CLICAR, O GRÁFICO MUDA!
-            row.onclick = () => this.loadTradingView(isUp ? `BMFBOVESPA:${s}` : `BMFBOVESPA:${s}`);
-            return row;
-        };
-
-        this.gainers.forEach(s => gCont.appendChild(createRow(s, true)));
-        this.losers.forEach(s => lCont.appendChild(createRow(s, false)));
+            row.innerHTML = `<span>${item.s}</span><span class="${item.type}">${item.type === 'up' ? '+' : '-'}${(Math.random()*5).toFixed(2)}%</span>`;
+            row.onclick = () => this.initTradingView(`BMFBOVESPA:${item.s}`);
+            list.appendChild(row);
+        });
     },
 
-    launchClock() {
+    startClock() {
         setInterval(() => {
             document.getElementById('clock').innerText = new Date().toLocaleTimeString();
         }, 1000);
