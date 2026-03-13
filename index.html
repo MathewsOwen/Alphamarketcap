@@ -3,45 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="AlphaMarketCap - Inteligência Global e Monitoramento de Ativos em Tempo Real">
-    <title>AlphaMarketCap | Terminal Dashboard</title>
-    <link rel="stylesheet" href="detalhe/style.css">
+    <meta name="description" content="AlphaMarketCap | Terminal de Inteligência Financeira e Monitoramento Global de Ativos.">
+    <meta name="author" content="AlphaMarketCap Enterprise">
+    <title>AlphaMarketCap | Global Terminal</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <header class="navbar">
-        <div class="logo">ALPHAMARKETCAP // SYSTEM</div>
-        <div class="ticker">
-            <span class="ticker-box">BTC <span class="green">▲ $68,241</span></span>
-            <span class="ticker-box">ETH <span class="green">▲ $3,812</span></span>
+    <header class="app-header">
+        <div class="brand">
+            <span class="logo-text">ALPHAMARKETCAP</span>
+            <span class="system-status">CORE_V3_ONLINE</span>
         </div>
-        <button id="loginBtn" class="btn-access">LOGIN_MEMBRO</button>
+        
+        <div class="market-ticker" id="ticker">
+            </div>
+
+        <nav class="user-controls">
+            <button id="loginBtn" class="btn-primary">ACCESS_LOGIN</button>
+        </nav>
     </header>
 
-    <div class="app-container">
-        <aside class="sidebar">
-            <nav>
-                <div class="nav-item active">📊 DASHBOARD</div>
-                <div class="nav-item">📈 LIVE CHARTS</div>
-                <div class="nav-item">📡 SIGNALS</div>
+    <main class="app-layout">
+        <aside class="app-sidebar">
+            <nav class="side-nav">
+                <a href="#" class="nav-link active">DASHBOARD</a>
+                <a href="#" class="nav-link">LIVE_CHARTS</a>
+                <a href="#" class="nav-link">QUANT_SIGNALS</a>
+                <a href="#" class="nav-link">PORTFOLIO</a>
             </nav>
+            <div class="sidebar-footer">
+                <span class="connection-pulse"></span> SECURE CONNECTION
+            </div>
         </aside>
 
-        <main class="terminal-view">
-            <section class="chart-section">
-                <div class="section-header">
-                    <h2>MARKET_MONITOR_V2</h2>
+        <section class="viewport">
+            <div class="panel chart-panel">
+                <div class="panel-header">
+                    <h2>REAL_TIME_MARKET_MONITOR</h2>
+                    <div class="panel-tools">
+                        <span class="tag">HIGH_PRIORITY</span>
+                        <span class="tag">60FPS</span>
+                    </div>
                 </div>
-                <div class="graph-area" id="graphArea"></div>
-            </section>
+                <div class="canvas-wrapper">
+                    <div id="chartContainer" class="chart-engine"></div>
+                </div>
+            </div>
 
-            <section class="data-grid">
-                <div class="data-card">VOLATILITY: <span class="cyan">HIGH</span></div>
-                <div class="data-card">STATUS: <span class="cyan">ONLINE</span></div>
-            </section>
-        </main>
-    </div>
+            <div class="stats-row">
+                <div class="stat-card">
+                    <label>NETWORK_LATENCY</label>
+                    <div class="value">12ms</div>
+                </div>
+                <div class="stat-card">
+                    <label>GLOBAL_SENTIMENT</label>
+                    <div class="value color-cyan">BULLISH</div>
+                </div>
+                <div class="stat-card">
+                    <label>ACTIVE_NODES</label>
+                    <div class="value">1,402</div>
+                </div>
+            </div>
+        </section>
+    </main>
 
-    <script src="detalhe/script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
