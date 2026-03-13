@@ -1,10 +1,10 @@
 window.addEventListener('load', () => {
-    // Garante que o splash apareça por pelo menos 3 segundos
+    // Dá tempo do usuário admirar o logo antes de entrar
     setTimeout(() => {
         const splash = document.getElementById('splash-screen');
         const main = document.getElementById('main-content');
 
-        splash.style.transition = 'opacity 1s';
+        splash.style.transition = 'opacity 1s ease-in-out';
         splash.style.opacity = '0';
         
         setTimeout(() => {
@@ -13,9 +13,4 @@ window.addEventListener('load', () => {
             document.body.style.overflow = 'auto';
         }, 1000);
     }, 3000);
-});
-
-// Ação do botão de login
-document.getElementById('loginBtn').addEventListener('click', () => {
-    alert('Conectando ao servidor Alpha... O sistema de usuários será implementado via Firebase.');
 });
