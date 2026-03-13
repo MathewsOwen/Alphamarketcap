@@ -2,11 +2,13 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>AlphaMarketCap | Global Intelligence</title>
+    <title>AlphaMarketCap | Private Banking Terminal</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=301">
+    <link rel="stylesheet" href="css/style.css?v=400">
 </head>
-<body class="gold-edition">
+<body class="private-edition">
+
+    <audio id="notif-sound" src="https://assets.mixkit.co/active_storage/sfx/2358/2358-preview.mp3" preload="auto"></audio>
 
     <div class="top-bar">
         <div class="ticker-track" id="globalTicker"></div>
@@ -18,8 +20,8 @@
                 <span class="logo-gold">ALPHA</span><span class="logo-white">MARKETCAP</span>
             </div>
             <nav class="nav">
-                <button class="nav-link active" onclick="switchTab('market')">MERCADOS</button>
-                <button class="nav-link" onclick="switchTab('news')">NOTÍCIAS VIVAS</button>
+                <button class="nav-link active" onclick="switchTab('market')">TERMINAL</button>
+                <button class="nav-link" onclick="switchTab('news')">FEED DE NOTÍCIAS</button>
             </nav>
         </div>
     </header>
@@ -32,28 +34,31 @@
         </section>
 
         <aside class="ranking-section" id="rankingView">
-            <div class="card">
-                <h3 class="gold-title">TOP 10 ALTAS (B3)</h3>
-                <div id="highList" class="asset-list"></div>
+            <div class="card ranking-card">
+                <div class="tabs-ranking">
+                    <button id="btn-high" class="tab-btn active" onclick="toggleRanking('high')">ALTAS</button>
+                    <button id="btn-low" class="tab-btn" onclick="toggleRanking('low')">BAIXAS</button>
+                </div>
                 
-                <h3 class="gold-title mt-20">TOP 10 BAIXAS (B3)</h3>
-                <div id="lowList" class="asset-list"></div>
+                <div id="highList" class="asset-list"></div>
+                <div id="lowList" class="asset-list hidden"></div>
             </div>
         </aside>
 
         <section class="news-section hidden" id="newsView">
             <div class="card">
                 <div class="news-header">
-                    <h2 class="gold-title">WORLD NEWS FEED // 1min Update</h2>
-                    <span class="live-tag">LIVE</span>
-                </div>
-                <div id="newsFeed" class="news-grid">
+                    <h2 class="gold-title">GLOBAL INTELLIGENCE FEED</h2>
+                    <div class="live-indicator">
+                        <span class="pulse-red"></span> LIVE UPDATING
                     </div>
+                </div>
+                <div id="newsFeed" class="news-grid"></div>
             </div>
         </section>
     </main>
 
     <script src="https://s3.tradingview.com/tv.js"></script>
-    <script src="js/app.js?v=301"></script>
+    <script src="js/app.js?v=400"></script>
 </body>
 </html>
